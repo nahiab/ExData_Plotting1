@@ -1,0 +1,12 @@
+data = read.table ("household_power_consumption.txt", sep=";", header=TRUE)
+data$timing <- paste (data$Date, data$Time)
+data$timing <- strptime(data$timing, "%d/%m/%Y %H:%M:%S")
+data$Date <- as.Date(data$Date, "%d/%m/%Y")
+clean <- subset (data, Date == "2007-02-01" | Date == "2007-02-02")
+with (clean, plot(timing, as.numeric(as.character(Sub_metering_1)), type="l", xlab= " ", ylab="Energy sub metering"))
+points (clean$timing, as.numeric(as.character(clean$Sub_metering_2)), col="red", type="l")
+points (clean$timing, as.numeric(as.character(clean$Sub_metering_3)), col="blue", type="l")
+legend("topright", pch=1, col=c("black", "red", "blue"), legend= c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3"))
+
+dev.copy (png, file="plot3.png")
+dev.off()
